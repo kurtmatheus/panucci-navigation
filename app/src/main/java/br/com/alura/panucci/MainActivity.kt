@@ -15,12 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import br.com.alura.panucci.navigation.DRINKS_ROUTE
-import br.com.alura.panucci.navigation.HIGH_LIGHTS_LIST_ROUTE
-import br.com.alura.panucci.navigation.MENU_ROUTE
-import br.com.alura.panucci.navigation.PanucciNavHost
-import br.com.alura.panucci.navigation.navigateSingleTopWithPopUpTo
-import br.com.alura.panucci.navigation.navigateToCheckout
+import br.com.alura.panucci.navigation.*
 import br.com.alura.panucci.ui.components.BottomAppBarItem
 import br.com.alura.panucci.ui.components.PanucciBottomAppBar
 import br.com.alura.panucci.ui.components.bottomAppBarItems
@@ -43,27 +38,28 @@ class MainActivity : ComponentActivity() {
             }
             val backStackEntryState by navController.currentBackStackEntryAsState()
             val currentDestination = backStackEntryState?.destination
-            val currentRoute = currentDestination?.route
             PanucciTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val currentRoute = currentDestination?.route
                     val selectedItem by remember(currentDestination) {
                         val item = when (currentRoute) {
-                            HIGH_LIGHTS_LIST_ROUTE -> BottomAppBarItem.HighLightList
-                            MENU_ROUTE -> BottomAppBarItem.Menu
-                            DRINKS_ROUTE -> BottomAppBarItem.Drinks
-                            else -> BottomAppBarItem.HighLightList
+                            highlightsListRoute -> BottomAppBarItem.HighlightsList
+                            menuRoute -> BottomAppBarItem.Menu
+                            drinksRoute -> BottomAppBarItem.Drinks
+                            else -> BottomAppBarItem.HighlightsList
                         }
                         mutableStateOf(item)
                     }
-                    val containsInBottomAppBarItems = when (currentRoute) {
-                        HIGH_LIGHTS_LIST_ROUTE, MENU_ROUTE, DRINKS_ROUTE -> true
+                    val containsInBottomAppBarItems = when(currentRoute) {
+                        highlightsListRoute, menuRoute, drinksRoute -> true
                         else -> false
                     }
-                    val isShowFab = when (currentRoute) {
-                        MENU_ROUTE, DRINKS_ROUTE -> true
+                    val isShowFab = when (currentDestination?.route) {
+                        menuRoute,
+                        drinksRoute -> true
                         else -> false
                     }
                     PanucciApp(
@@ -84,6 +80,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

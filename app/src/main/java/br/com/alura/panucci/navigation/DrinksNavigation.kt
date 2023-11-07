@@ -5,24 +5,23 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import br.com.alura.panucci.model.Product
 import br.com.alura.panucci.ui.screens.DrinksListScreen
 import br.com.alura.panucci.ui.viewmodels.DrinksListViewModel
 
-const val DRINKS_ROUTE = "drinks"
+internal const val drinksRoute = "drinks"
 
-fun NavGraphBuilder.drinksScreen(navController: NavHostController) {
-    composable(DRINKS_ROUTE) {
+fun NavGraphBuilder.drinksScreen(
+    onNavigateToProductDetails: (Product) -> Unit
+) {
+    composable(drinksRoute) {
         val viewModel = viewModel<DrinksListViewModel>()
         val uiState by viewModel.uiState.collectAsState()
-
         DrinksListScreen(
             uiState = uiState,
-            onNavigateToDetails = { product ->
-                navController.navigateToProductDetails(product.id)
-            },
+            onProductClick = onNavigateToProductDetails,
         )
     }
 }
@@ -30,5 +29,5 @@ fun NavGraphBuilder.drinksScreen(navController: NavHostController) {
 fun NavController.navigateToDrinks(
     navOptions: NavOptions? = null
 ) {
-    navigate(DRINKS_ROUTE, navOptions)
+    navigate(drinksRoute, navOptions)
 }

@@ -18,22 +18,25 @@ sealed class BottomAppBarItem(
     val label: String,
     val icon: ImageVector
 ) {
-    object HighLightList : BottomAppBarItem(
-    label = "Destaques",
-    icon = Icons.Filled.AutoAwesome
+    object HighlightsList : BottomAppBarItem(
+        label = "Destaques",
+        icon = Icons.Filled.AutoAwesome
     )
+
     object Menu : BottomAppBarItem(
-    label = "Menu",
-    icon = Icons.Filled.RestaurantMenu
+        label = "Menu",
+        icon = Icons.Filled.RestaurantMenu
     )
+
     object Drinks : BottomAppBarItem(
-    label = "Bebidas",
-    icon = Icons.Outlined.LocalBar
+        label = "Bebidas",
+        icon = Icons.Outlined.LocalBar
     )
+
 }
 
 val bottomAppBarItems = listOf(
-    BottomAppBarItem.HighLightList,
+    BottomAppBarItem.HighlightsList,
     BottomAppBarItem.Menu,
     BottomAppBarItem.Drinks
 )

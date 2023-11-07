@@ -4,10 +4,10 @@ import br.com.alura.panucci.model.Product
 
 sealed class ProductDetailsUiState {
 
-    object LOADING : ProductDetailsUiState()
+    object Loading : ProductDetailsUiState()
 
-    object FAILURE : ProductDetailsUiState()
+    object Failure : ProductDetailsUiState()
 
-    data class SUCESS(val product: Product) : ProductDetailsUiState()
+    class Success(val product: Product) : ProductDetailsUiState()
 
 }

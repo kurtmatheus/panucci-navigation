@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.alura.panucci.model.Product
 import br.com.alura.panucci.sampledata.sampleProducts
 import br.com.alura.panucci.ui.components.CheckoutItemCard
 import br.com.alura.panucci.ui.theme.PanucciTheme
@@ -26,11 +25,10 @@ import br.com.alura.panucci.ui.uistate.CheckoutUiState
 @Composable
 fun CheckoutScreen(
     modifier: Modifier = Modifier,
-    onPopBackStack: () -> Unit = {},
-    uiState: CheckoutUiState
+    onOrderClick: () -> Unit = {},
+    uiState: CheckoutUiState = CheckoutUiState()
 ) {
     val products = uiState.products
-
     Box(
         modifier.fillMaxSize()
     ) {
@@ -131,7 +129,7 @@ fun CheckoutScreen(
             }
         }
         Button(
-            onClick = { onPopBackStack() },
+            onClick = { onOrderClick() },
             Modifier
                 .padding(
                     16.dp
@@ -159,7 +157,9 @@ fun CheckoutScreenPreview() {
     PanucciTheme {
         Surface {
             CheckoutScreen(
-                uiState = CheckoutUiState(products = sampleProducts)
+                uiState = CheckoutUiState(
+                    products = sampleProducts
+                )
             )
         }
     }
@@ -170,7 +170,9 @@ fun CheckoutScreenPreview() {
 fun CheckoutScreenWithoutProductsPreview() {
     PanucciTheme {
         Surface {
-            CheckoutScreen(uiState = CheckoutUiState())
+            CheckoutScreen(
+                uiState = CheckoutUiState()
+            )
         }
     }
 }

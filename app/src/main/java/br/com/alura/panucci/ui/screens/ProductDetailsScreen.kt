@@ -1,22 +1,9 @@
 package br.com.alura.panucci.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,86 +20,110 @@ import coil.compose.AsyncImage
 
 @Composable
 fun ProductDetailsScreen(
-    modifier: Modifier = Modifier,
-    onNavigateToCheckout: () -> Unit = {},
     uiState: ProductDetailsUiState,
-    onTryLoadProductAgain: () -> Unit = {},
-    onClickReturn: () -> Unit = {}
+    modifier: Modifier = Modifier,
+    onOrderClick: () -> Unit = {},
+    onTryFindProductAgainClick: () -> Unit = {},
+    onBackClick: () -> Unit = {}
 ) {
-
-    when(uiState) {
-        ProductDetailsUiState.FAILURE -> {
+    when (uiState) {
+        ProductDetailsUiState.Failure -> {
             Column(
-                modifier = modifier.fillMaxSize(),
+                Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally) {
-
-                Text(text = "Falha ao Carregar Produto...")
-                Spacer(modifier = modifier.padding(8.dp))
-                Button(onClick = onTryLoadProductAgain) {
-                    Text(text = "Tentar Novamente")
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Falha ao buscar o produto")
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = onTryFindProductAgainClick) {
+                    Text(text = "Tentar buscar novamente")
                 }
-                TextButton(onClick = onClickReturn) {
+                Spacer(modifier = Modifier.height(8.dp))
+                TextButton(onClick = onBackClick) {
                     Text(text = "Voltar")
                 }
             }
         }
-        ProductDetailsUiState.LOADING -> {
-            Box(modifier = modifier.fillMaxSize()) {
+        ProductDetailsUiState.Loading -> {
+            Box(Modifier.fillMaxSize()) {
                 CircularProgressIndicator(Modifier.align(Alignment.Center))
             }
         }
-        is ProductDetailsUiState.SUCESS -> {
-            uiState.product.let { product ->
+        is ProductDetailsUiState.Success -> {
+            val product = uiState.product
+            Column(
+                modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                product.image?.let {
+                    AsyncImage(
+                        model = product.image,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .height(200.dp)
+                            .fillMaxWidth(),
+                        placeholder = painterResource(id = R.drawable.placeholder),
+                        contentScale = ContentScale.Crop
+                    )
+                }
                 Column(
-                    modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
+                    Modifier
+                        .padding(16.dp)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    product.image?.let {
-                        AsyncImage(
-                            model = product.image,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .height(200.dp)
-                                .fillMaxWidth(),
-                            placeholder = painterResource(id = R.drawable.placeholder),
-                            contentScale = ContentScale.Crop
-                        )
-                    }
-                    Column(
+                    Text(product.name, fontSize = 24.sp)
+                    Text(product.price.toPlainString(), fontSize = 18.sp)
+                    Text(product.description)
+                    Button(
+                        onClick = { onOrderClick() },
                         Modifier
-                            .padding(16.dp)
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
-                        Text(product.name, fontSize = 24.sp)
-                        Text(product.price.toPlainString(), fontSize = 18.sp)
-                        Text(product.description)
-                        Button(
-                            onClick = { onNavigateToCheckout() },
-                            Modifier
-                                .fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                        ) {
-                            Text(text = "Pedir")
-                        }
+                        Text(text = "Pedir")
                     }
                 }
             }
+
         }
     }
-
-
 }
 
 @Preview
 @Composable
-fun ProductDetailsScreenPreview() {
+fun ProductDetailsScreenWithSuccessStatePreview() {
     PanucciTheme {
         Surface {
             ProductDetailsScreen(
-                uiState = ProductDetailsUiState.SUCESS(product = sampleProducts.first())
+                uiState = ProductDetailsUiState.Success(
+                    sampleProducts.random()
+                ),
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ProductDetailsScreenWithFailureStatePreview() {
+    PanucciTheme {
+        Surface {
+            ProductDetailsScreen(
+                uiState = ProductDetailsUiState.Failure,
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun ProductDetailsScreenWithLoadingStatePreview() {
+    PanucciTheme {
+        Surface {
+            ProductDetailsScreen(
+                uiState = ProductDetailsUiState.Loading,
             )
         }
     }

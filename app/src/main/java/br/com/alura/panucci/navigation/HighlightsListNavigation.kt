@@ -8,26 +8,28 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import br.com.alura.panucci.model.Product
-import br.com.alura.panucci.ui.screens.MenuListScreen
-import br.com.alura.panucci.ui.viewmodels.MenuListViewModel
+import br.com.alura.panucci.ui.screens.HighlightsListScreen
+import br.com.alura.panucci.ui.viewmodels.HighlightsListViewModel
 
-internal const val menuRoute = "menu"
+internal const val highlightsListRoute = "highlight"
 
-fun NavGraphBuilder.menuScreen(
+fun NavGraphBuilder.highlightsListScreen(
+    onNavigateToCheckout: () -> Unit,
     onNavigateToProductDetails: (Product) -> Unit
 ) {
-    composable(menuRoute) {
-        val viewModel = viewModel<MenuListViewModel>()
+    composable(highlightsListRoute) {
+        val viewModel = viewModel<HighlightsListViewModel>()
         val uiState by viewModel.uiState.collectAsState()
-        MenuListScreen(
+        HighlightsListScreen(
             uiState = uiState,
             onProductClick = onNavigateToProductDetails,
+            onOrderClick = onNavigateToCheckout,
         )
     }
 }
 
-fun NavController.navigateToMenu(
+fun NavController.navigateToHighlightsList(
     navOptions: NavOptions? = null
 ) {
-    navigate(menuRoute, navOptions)
+    navigate(highlightsListRoute, navOptions)
 }
