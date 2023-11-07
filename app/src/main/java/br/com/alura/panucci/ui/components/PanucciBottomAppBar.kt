@@ -12,10 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import br.com.alura.panucci.navigation.DRINKS_ROUTE
-import br.com.alura.panucci.navigation.HIGH_LIGHTS_LIST_ROUTE
-import br.com.alura.panucci.navigation.MENU_ROUTE
-import br.com.alura.panucci.navigation.bottomAppBarItems
 import br.com.alura.panucci.ui.theme.PanucciTheme
 
 sealed class BottomAppBarItem(

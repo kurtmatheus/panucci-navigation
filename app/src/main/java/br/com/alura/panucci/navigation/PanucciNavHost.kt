@@ -1,29 +1,22 @@
 package br.com.alura.panucci.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
+import androidx.navigation.navigation
 import br.com.alura.panucci.ui.components.BottomAppBarItem
-import br.com.alura.panucci.ui.components.BottomAppBarItem.Drinks
-import br.com.alura.panucci.ui.components.BottomAppBarItem.HighLightList
-import br.com.alura.panucci.ui.components.BottomAppBarItem.Menu
 
 @Composable
 fun PanucciNavHost(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = HIGH_LIGHTS_LIST_ROUTE
+        startDestination = HOME_ROUTE
     ) {
-        highLightsListScreen(navController)
-        menuScreen(navController)
-        drinksScreen(navController)
+        homeGraph(navController)
         productDetailsScreen(navController)
         checkoutScreen(navController)
     }
 }
-
-val bottomAppBarItems = listOf(
-    HighLightList,
-    Menu,
-    Drinks
-)
