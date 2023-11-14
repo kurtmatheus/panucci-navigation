@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.alura.panucci.ui.theme.PanucciTheme
 
@@ -48,7 +50,9 @@ fun PanucciBottomAppBar(
     items: List<BottomAppBarItem> = emptyList(),
     onItemChange: (BottomAppBarItem) -> Unit = {}
 ) {
-    NavigationBar(modifier) {
+    NavigationBar(
+        modifier = modifier.semantics { contentDescription = "bottom app bar" }
+    ) {
         items.forEach {
             val label = it.label
             val icon = it.icon
